@@ -25,7 +25,7 @@ export const getGitOwnerAndRepo = async () => {
     return { owner, repo };
   } else if (protocol === 'git@github.com') {
     const owner = remote.split(':')[1].split('/')[0];
-    const repo = remote.split(':')[1].split('/')[1].replace('.git', '');
+    const repo = remote.split(':')[1].split('/')[1].replace('.git', '').trim();
     return { owner, repo };
   }
 
