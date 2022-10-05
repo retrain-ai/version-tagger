@@ -4,3 +4,16 @@ author: 'sthuck'
 runs:
   using: 'node16'
   main: 'dist/index.js'
+inputs:
+  tag:
+    description: 'should create a new tag'
+    required: false
+    default: true
+  write:
+    description: 'write version to package.json'
+    required: false
+    default: true
+  commit:
+    description: 'should commit changes to package.json'
+    required: false
+    default: false

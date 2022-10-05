@@ -30,7 +30,7 @@ export const inferVersion = async (options: {
   }
 
   if (options.tag) {
-    await setNewTag(newVersion);
+    await setNewTag('v' + newVersion);
     logger.success('Tagged new version');
   }
 };
