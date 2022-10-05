@@ -21667,7 +21667,7 @@ const getGitOwnerAndRepo = async () => {
     }
     else if (protocol === 'git@github.com') {
         const owner = remote.split(':')[1].split('/')[0];
-        const repo = remote.split(':')[1].split('/')[1].replace('.git', '');
+        const repo = remote.split(':')[1].split('/')[1].replace('.git', '').trim();
         return { owner, repo };
     }
     throw new Error('Invalid remote url');
