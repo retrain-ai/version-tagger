@@ -21662,7 +21662,7 @@ const getGitOwnerAndRepo = async () => {
     const protocol = remote.split(':')[0];
     if (protocol === 'https') {
         const owner = remote.split('/')[3];
-        const repo = remote.split('/')[4].split('.')[0];
+        const repo = remote.split('/')[4].split('.')[0].trim();
         return { owner, repo };
     }
     else if (protocol === 'git@github.com') {
