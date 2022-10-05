@@ -39,7 +39,7 @@ describe('lib', () => {
     describe('tags', () => {
       it('should return an empty array when no tags exist', async () => {
         const tags = await getTags();
-        expect(tags).toEqual([]);
+        return expect(tags).toEqual([]);
       });
 
       it('should return a list of tags when multiple exists', async () => {
@@ -53,20 +53,20 @@ describe('lib', () => {
         $`git tag v2.0.0`;
 
         const tags = await getTags();
-        expect(tags).toEqual(['v1.0.0', 'v2.0.0']);
+        return expect(tags).toEqual(['v1.0.0', 'v2.0.0']);
       });
     });
 
     describe('package.json handling', () => {
       it('should read version from package.json', () => {
         $`echo '{"version": "1.0.0"}' > package.json`;
-        expect(getVersionFromPackageJson()).resolves.toBe('1.0.0');
+        return expect(getVersionFromPackageJson()).resolves.toBe('1.0.0');
       });
 
       it('should write version to package.json', async () => {
         $`echo '{"version": "1.0.0"}' > package.json`;
         await writeVersionToPackageJson('2.0.0');
-        expect(getVersionFromPackageJson()).resolves.toBe('2.0.0');
+        return expect(getVersionFromPackageJson()).resolves.toBe('2.0.0');
       });
     });
   });
@@ -74,7 +74,7 @@ describe('lib', () => {
   describe('getLatestVersionTag', () => {
     it('should get latest version', async () => {
       const latest = await getLatestVersionTag(['v1.0.0', 'v2.0.0']);
-      expect(latest).toEqual('v2.0.0');
+      return expect(latest).toEqual('v2.0.0');
     });
     it('should not rely on order', async () => {
       const latest = await getLatestVersionTag([
@@ -82,7 +82,7 @@ describe('lib', () => {
         'v1.0.11',
         'just a random tag',
       ]);
-      expect(latest).toEqual('v1.0.11');
+      return expect(latest).toEqual('v1.0.11');
     });
   });
 });

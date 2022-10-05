@@ -17,13 +17,13 @@ export const gitGetRemoteUrl = async () => {
 
 export const getGitOwnerAndRepo = async () => {
   const remote = await gitGetRemoteUrl();
-  const protocol = remote.split('://')[0];
+  const protocol = remote.split(':')[0];
 
   if (protocol === 'https') {
     const owner = remote.split('/')[3];
     const repo = remote.split('/')[4].split('.')[0];
     return { owner, repo };
-  } else if (protocol === 'git@') {
+  } else if (protocol === 'git@github.com') {
     const owner = remote.split(':')[1].split('/')[0];
     const repo = remote.split(':')[1].split('/')[1].replace('.git', '');
     return { owner, repo };
