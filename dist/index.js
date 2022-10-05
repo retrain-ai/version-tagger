@@ -21645,8 +21645,14 @@ const utils_1 = __nccwpck_require__(1314);
 const promises_1 = __nccwpck_require__(3292);
 const semver_1 = __nccwpck_require__(1383);
 const rest_1 = __nccwpck_require__(5375);
+const core_1 = __nccwpck_require__(2186);
+const getAuthToken = () => {
+    return process.env.GITHUB_TOKEN || (0, core_1.getInput)('token', { required: true });
+};
 const getTagsFromGithub = async () => {
-    const octokit = new rest_1.Octokit({ auth: process.env.GITHUB_TOKEN });
+    const octokit = new rest_1.Octokit({
+        auth: getAuthToken(),
+    });
     const { owner, repo } = await (0, exports.getGitOwnerAndRepo)();
     const response = await octokit.rest.repos.listTags({ owner, repo });
     return response.data.map((tag) => tag.name);
@@ -21695,11 +21701,14 @@ exports.getTags = getTags;
 const gitCommit = async (message) => {
     await (0, utils_1.$) `git add .`;
     await (0, utils_1.$) `git commit -m "${message}"`;
+    const remoteRepo = `https://${process.env.GITHUB_ACTOR}:${getAuthToken()}@github.com/${process.env.GITHUB_REPOSITORY}.git`;
+    await (0, utils_1.$) `git push ${remoteRepo} HEAD`;
 };
 exports.gitCommit = gitCommit;
 const setNewTag = async (tag) => {
     await (0, utils_1.$) `git tag ${tag}`;
-    await (0, utils_1.$) `git push origin ${tag}`;
+    const remoteRepo = `https://${process.env.GITHUB_ACTOR}:${getAuthToken()}@github.com/${process.env.GITHUB_REPOSITORY}.git`;
+    await (0, utils_1.$) `git push ${remoteRepo} ${tag}`;
 };
 exports.setNewTag = setNewTag;
 const getLatestVersionTag = async (tags) => {
@@ -21747,6 +21756,9 @@ const chalk_1 = __importDefault(__nccwpck_require__(8818));
 exports.logger = {
     log: (msg) => {
         console.log(msg);
+    },
+    debug: (msg) => {
+        console.log('DEBUG: ' + msg);
     },
     info: (msg) => {
         console.log(chalk_1.default.greenBright(msg));
@@ -21803,6 +21815,7 @@ exports.inferVersion = inferVersion;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.$ = void 0;
 const shelljs_1 = __nccwpck_require__(3516);
+const logger_1 = __nccwpck_require__(4636);
 //Replace this with zx once node is at version >= 16
 const zipTemplateStrings = (strings, ...values) => {
     return strings.reduce((acc, str, i) => {
@@ -21811,6 +21824,7 @@ const zipTemplateStrings = (strings, ...values) => {
 };
 const $ = async (command, ...args) => {
     const fullCommand = zipTemplateStrings(command, ...args);
+    logger_1.logger.debug('Running command: ' + fullCommand);
     const output = (0, shelljs_1.exec)(fullCommand);
     if (output.code !== 0) {
         throw new Error(`Command failed: ${fullCommand}, output: ${output.stderr}`);
