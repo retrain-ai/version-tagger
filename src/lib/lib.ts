@@ -4,9 +4,13 @@ import { gt, inc } from 'semver';
 import { Octokit } from '@octokit/rest';
 import { getInput } from '@actions/core';
 
+const getAuthToken = () => {
+  return process.env.GITHUB_TOKEN || getInput('token', { required: true });
+};
+
 export const getTagsFromGithub = async (): Promise<string[]> => {
   const octokit = new Octokit({
-    auth: process.env.GITHUB_TOKEN || getInput('token', { required: true }),
+    auth: getAuthToken(),
   });
   const { owner, repo } = await getGitOwnerAndRepo();
   const response = await octokit.rest.repos.listTags({ owner, repo });
@@ -56,11 +60,18 @@ export const getTags = () => {
 export const gitCommit = async (message: string) => {
   await $`git add .`;
   await $`git commit -m "${message}"`;
+  const remoteRepo = `https://${
+    process.env.GITHUB_ACTOR
+  }:${getAuthToken()}@github.com/${process.env.GITHUB_REPOSITORY}.git`;
+  await $`git push ${remoteRepo} HEAD`;
 };
 
 export const setNewTag = async (tag: string) => {
   await $`git tag ${tag}`;
-  await $`git push origin ${tag}`;
+  const remoteRepo = `https://${
+    process.env.GITHUB_ACTOR
+  }:${getAuthToken()}@github.com/${process.env.GITHUB_REPOSITORY}.git`;
+  await $`git push ${remoteRepo} ${tag}`;
 };
 
 export const getLatestVersionTag = async (tags?: string[]) => {
