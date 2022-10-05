@@ -21572,6 +21572,7 @@ const tag = core.getBooleanInput('tag');
 const write = core.getBooleanInput('write');
 const commit = core.getBooleanInput('commit');
 (0, main_1.inferVersion)({ commit, tag, writeToPkgJson: write }).catch((error) => {
+    console.error(error);
     core.setFailed(error.message);
 });
 

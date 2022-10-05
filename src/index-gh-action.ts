@@ -5,5 +5,6 @@ const write = core.getBooleanInput('write');
 const commit = core.getBooleanInput('commit');
 
 inferVersion({ commit, tag, writeToPkgJson: write }).catch((error) => {
+  console.error(error);
   core.setFailed(error.message);
 });
