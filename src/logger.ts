@@ -3,6 +3,9 @@ export const logger = {
   log: (msg: string) => {
     console.log(msg);
   },
+  debug: (msg: string) => {
+    console.log('DEBUG: ' + msg);
+  },
   info: (msg: string) => {
     console.log(chalk.greenBright(msg));
   },
