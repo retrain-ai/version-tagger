@@ -17,3 +17,6 @@ inputs:
     description: 'should commit changes to package.json'
     required: false
     default: false
+  token:
+    description: 'token to access github api'
+    required: true

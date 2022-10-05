@@ -2,9 +2,12 @@ import { $ } from '../utils';
 import { readFile, readdir, writeFile } from 'fs/promises';
 import { gt, inc } from 'semver';
 import { Octokit } from '@octokit/rest';
+import { getInput } from '@actions/core';
 
 export const getTagsFromGithub = async (): Promise<string[]> => {
-  const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
+  const octokit = new Octokit({
+    auth: process.env.GITHUB_TOKEN || getInput('token', { required: true }),
+  });
   const { owner, repo } = await getGitOwnerAndRepo();
   const response = await octokit.rest.repos.listTags({ owner, repo });
   return response.data.map((tag) => tag.name);
