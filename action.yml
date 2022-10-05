@@ -1,0 +1,6 @@
+name: 'version-tagger'
+description: 'determine version based on previous github tags'
+author: 'sthuck'
+runs:
+  using: 'node14'
+  main: 'dist/index.js'
