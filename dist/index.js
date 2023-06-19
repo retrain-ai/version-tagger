@@ -21702,13 +21702,13 @@ const gitCommit = async (message) => {
     await (0, utils_1.$) `git add .`;
     await (0, utils_1.$) `git commit -m "${message}"`;
     const remoteRepo = `https://${process.env.GITHUB_ACTOR}:${getAuthToken()}@github.com/${process.env.GITHUB_REPOSITORY}.git`;
-    await (0, utils_1.$) `git push ${remoteRepo} HEAD`;
+    await (0, utils_1.$) `git push ${remoteRepo} HEAD --no-verify`;
 };
 exports.gitCommit = gitCommit;
 const setNewTag = async (tag) => {
     await (0, utils_1.$) `git tag ${tag}`;
     const remoteRepo = `https://${process.env.GITHUB_ACTOR}:${getAuthToken()}@github.com/${process.env.GITHUB_REPOSITORY}.git`;
-    await (0, utils_1.$) `git push ${remoteRepo} ${tag}`;
+    await (0, utils_1.$) `git push ${remoteRepo} ${tag} --no-verify`;
 };
 exports.setNewTag = setNewTag;
 const getLatestVersionTag = async (tags) => {

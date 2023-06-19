@@ -63,7 +63,7 @@ export const gitCommit = async (message: string) => {
   const remoteRepo = `https://${
     process.env.GITHUB_ACTOR
   }:${getAuthToken()}@github.com/${process.env.GITHUB_REPOSITORY}.git`;
-  await $`git push ${remoteRepo} HEAD`;
+  await $`git push ${remoteRepo} HEAD --no-verify`;
 };
 
 export const setNewTag = async (tag: string) => {
@@ -71,7 +71,7 @@ export const setNewTag = async (tag: string) => {
   const remoteRepo = `https://${
     process.env.GITHUB_ACTOR
   }:${getAuthToken()}@github.com/${process.env.GITHUB_REPOSITORY}.git`;
-  await $`git push ${remoteRepo} ${tag}`;
+  await $`git push ${remoteRepo} ${tag} --no-verify`;
 };
 
 export const getLatestVersionTag = async (tags?: string[]) => {
